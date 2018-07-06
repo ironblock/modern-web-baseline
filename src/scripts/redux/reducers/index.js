@@ -4,7 +4,7 @@
 // Root collection point for all reducers. This must not ever use "export *" -
 // it causes cross-environment problems.
 
-import { combineReducers } from 'redux';
+import { combineReducers } from "redux";
 
 import type { AuthState } from "./auth";
 
@@ -15,7 +15,7 @@ export type StateShape = {
 };
 
 const rootReducer: StateShape = combineReducers({
-  auth,
+  auth
 });
 
 export default rootReducer;

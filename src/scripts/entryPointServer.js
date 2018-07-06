@@ -3,24 +3,28 @@
 
 // POLYFILLS
 import "babel-polyfill";
-import 'isomorphic-fetch';
+import "isomorphic-fetch";
 
-import React from 'react';
-import { renderToString, renderToStaticMarkup } from 'react-dom/server';
-import { StaticRouter } from 'react-router';
-import { Provider } from 'react-redux';
+import React from "react";
+import { renderToString, renderToStaticMarkup } from "react-dom/server";
+import { StaticRouter } from "react-router";
+import { Provider } from "react-redux";
 
 // CONTENT
-import { configureStore } from './redux';
-import Html from './Html';
-import App from './App';
+import { configureStore } from "./redux";
+import Html from "./Html";
+import App from "./App";
 
 // HELPERS
 // =======
 function getPathsFromStats(chunkName, regex, stats) {
   let assets = [];
 
-  if (stats.clientStats && stats.clientStats.assetsByChunkName && stats.clientStats.assetsByChunkName[chunkName]) {
+  if (
+    stats.clientStats &&
+    stats.clientStats.assetsByChunkName &&
+    stats.clientStats.assetsByChunkName[chunkName]
+  ) {
     assets = assets.concat(stats.clientStats.assetsByChunkName[chunkName]);
   } else if (stats.assetsByChunkName && stats.assetsByChunkName[chunkName]) {
     assets = assets.concat(stats.assetsByChunkName[chunkName]);
@@ -36,11 +40,11 @@ function getPathsFromStats(chunkName, regex, stats) {
 function render(store, stats, request, context) {
   const state = store.getState();
 
-  const vendorJs = getPathsFromStats('vendor', /\.js$/, stats);
-  const js = getPathsFromStats('main', /\.js$/, stats);
-  const vendorCss = getPathsFromStats('vendor', /\.css$/, stats);
+  const vendorJs = getPathsFromStats("vendor", /\.js$/, stats);
+  const js = getPathsFromStats("main", /\.js$/, stats);
+  const vendorCss = getPathsFromStats("vendor", /\.css$/, stats);
 
-  const css = getPathsFromStats('main', /\.css$/, stats);
+  const css = getPathsFromStats("main", /\.css$/, stats);
 
   const content = (
     <Html
@@ -52,7 +56,7 @@ function render(store, stats, request, context) {
           <StaticRouter location={request.url} context={context}>
             <App />
           </StaticRouter>
-        </Provider>,
+        </Provider>
       )}
     />
   );
@@ -60,9 +64,9 @@ function render(store, stats, request, context) {
   return renderToStaticMarkup(content);
 }
 
-export default (stats) => {
+export default stats => {
   if (process.env.DEV_TOOLS) {
-    console.info('Development tools have been enabled');
+    console.info("Development tools have been enabled");
   }
   if (process.env.VERSION) {
     console.info(`Built Version: ${process.env.VERSION}`);
@@ -83,12 +87,15 @@ export default (stats) => {
         const markup = render(store, stats, req, context);
 
         if (context.url) {
-          const querystring = context.from ? `?from=${context.from}` : '';
-          return res.redirect(context.status || 302, `${context.url}${querystring}`);
+          const querystring = context.from ? `?from=${context.from}` : "";
+          return res.redirect(
+            context.status || 302,
+            `${context.url}${querystring}`
+          );
         }
 
         return res.send(`<!doctype html>${markup}`);
-      })
+      });
     } catch (error) {
       console.error(error);
       // Pass the error to the next middleware. It may wish to act on it or

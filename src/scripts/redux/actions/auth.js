@@ -1,9 +1,9 @@
 // @flow
 // AUTH - ACTIONS
 // =============================================================================
-import { createAction } from 'redux-actions';
+import { createAction } from "redux-actions";
 
-import * as Types from './types/auth';
+import * as Types from "./types/auth";
 
 export const loginRequest = createAction(Types.LOGIN_REQUEST);
 export const loginFailure = createAction(Types.LOGIN_FAILURE);

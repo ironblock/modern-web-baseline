@@ -5,16 +5,23 @@
 // application uses a single store. It should be required by a `<Provider>`
 // client-side or server-side.
 
-import type Store from 'redux';
+import type Store from "redux";
 
-import { createStore, applyMiddleware, compose } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import createSagaMiddleware, { END } from 'redux-saga';
+import { createStore, applyMiddleware, compose } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
+import createSagaMiddleware, { END } from "redux-saga";
 
-import type { StateShape } from './reducers';
+import type { StateShape } from "./reducers";
 
-import rootReducer from './reducers';
-import rootSaga from './sagas';
+import rootReducer from "./reducers";
+import rootSaga from "./sagas";
+
+// Fix type for Webpack HMR
+declare var module: {
+  hot: {
+    accept(path: string, callback: () => void): void
+  }
+};
 
 export function configureStore(): Promise<Store> {
   const sagaMiddleware = createSagaMiddleware();
@@ -34,13 +41,13 @@ export function configureStore(): Promise<Store> {
   const store: Store = createStore(
     rootReducer,
     initialState,
-    composeEnhancers(applyMiddleware(sagaMiddleware)),
+    composeEnhancers(applyMiddleware(sagaMiddleware))
   );
 
   // Configure Webpack HMR to accept changing reducers without a reload
-  if (typeof module === 'object' && typeof module.hot === 'object' && typeof module.hot.accept === 'function') {
-    module.hot.accept('./reducers', () => {
-      const nextReducer = require('./reducers').default; // eslint-disable-line global-require
+  if (module && module.hasOwnProperty("hot")) {
+    module.hot.accept("./reducers", () => {
+      const nextReducer = require("./reducers").default; // eslint-disable-line global-require
 
       store.replaceReducer(nextReducer);
     });
@@ -49,9 +56,9 @@ export function configureStore(): Promise<Store> {
   // Begin persisting store
   return new Promise((resolve: Store => void) => {
     // Redux Saga configuration
-      store.runSaga = sagaMiddleware.run;
-      store.close = (): void => store.dispatch(END);
-      store.runSaga(rootSaga);
-      resolve(store);
-    });
+    store.runSaga = sagaMiddleware.run;
+    store.close = (): void => store.dispatch(END);
+    store.runSaga(rootSaga);
+    resolve(store);
+  });
 }

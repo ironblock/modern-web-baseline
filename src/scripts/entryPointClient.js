@@ -5,34 +5,35 @@
 
 // POLYFILLS
 import "babel-polyfill";
-import 'isomorphic-fetch';
+import "isomorphic-fetch";
 
-import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import { hydrate } from 'react-dom';
-import { Provider } from 'react-redux';
+import React from "react";
+import { BrowserRouter } from "react-router-dom";
+import { hydrate } from "react-dom";
+import { Provider } from "react-redux";
 
-import { configureStore } from './redux';
-import App from './App';
+import { configureStore } from "./redux";
+import App from "./App";
 
 // Enable HMR if supported
 if (module.hot) module.hot.accept();
 
 // STYLES
-require('../styles/index.scss');
+require("../styles/index.scss");
 
 // REDUX
 configureStore()
-  .then((store) => {
+  .then(store => {
     // RENDER WEBAPP TO ROOT NODE
-    hydrate((
+    hydrate(
       <Provider store={store}>
         <BrowserRouter>
           <App />
         </BrowserRouter>
-      </Provider>
-    ), document.getElementById('REACT_ROOT'));
+      </Provider>,
+      document.getElementById("REACT_ROOT")
+    );
   })
   .then(() => {
-    document.getElementById('HIDE_FOUC').remove();
+    document.getElementById("HIDE_FOUC").remove();
   });

@@ -10,7 +10,7 @@
     "build:dev": "NODE_ENV=development webpack --colors --config ./webpack/development.config.js",
     "test": "npm-run-all -cp test:eslint test:flow",
     "test:flow": "flow check",
-    "test:eslint": "eslint --fix ./src/scripts"
+    "test:eslint": "eslint --fix ./src/scripts ./server"
   },
   "author": "Corey Vixie",
   "license": "ISC",
