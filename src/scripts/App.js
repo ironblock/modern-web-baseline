@@ -2,8 +2,8 @@
 // APP ROOT
 // =============================================================================
 
-import React, { Fragment } from "react";
-import { Switch, Route, withRouter } from "react-router-dom";
+import React from "react";
+import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
 // import Navigation from './components/Navigation';
@@ -32,9 +32,4 @@ const mapStateToProps = (state: StateShape): Props => ({
   authToken: state.auth.authToken
 });
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    null
-  )(App)
-);
+export default withRouter(connect(mapStateToProps)(App));
