@@ -3,57 +3,6 @@
 // =============================================================================
 // General purpose utilities required by the generated output files.
 
-// FLUX STANDARD ACTIONS
-// These may be brought in by something like flow-typed in the future. For the
-// time being, this is a relatively faithful conversion of the TypeScript
-// equivalents defined in https://github.com/redux-utilities/flux-standard-action/blob/master/src/index.d.ts
-
-/* eslint-disable no-use-before-define */
-export type ActionType = string;
-export type NormalFSA<
-  Payload: mixed | Error = typeof undefined,
-  Meta: mixed = typeof undefined
-> = {|
-  type: ActionType,
-  payload: Payload,
-  error: boolean,
-  meta: Meta
-|};
-export type FluxStandardAction<Payload, Meta> = NormalFSA<Payload, Meta>;
-export type FSA<Payload, Meta> = NormalFSA<Payload, Meta>;
-
-// JSON TYPES
-export type PrimitiveType = null | string | boolean | number;
-export type JSONObject = {
-  [key: string]: PrimitiveType | JSONObject | JSONArray | void
-};
-export type JSONArray =
-  | Array<PrimitiveType>
-  | Array<JSONObject>
-  | Array<JSONArray>;
-export type JSONType = JSONObject | JSONArray | PrimitiveType;
-
-// SWAGGER GEN JS UTILITY TYPES
-export type ApiEndpointState = {
-  success: JSONType | null,
-  failure: JSONType | null,
-  timeout: JSONType | null,
-  mistake: JSONType | null,
-  isFetching: boolean,
-  lastUpdate: number | null,
-  lastResult: "success" | "failure" | "timeout" | "mistake" | null
-};
-export type KeyedCollectionState = ApiEndpointState & {
-  collection: { [string]: JSONObject }
-};
-
-export type ReducerState<Name: string> = { [string]: ApiEndpointState } & {
-  [Name]: ApiEndpointState
-};
-export type KeyedReducerState<Name: string> = {
-  [string]: KeyedCollectionState
-} & { [Name]: KeyedCollectionState };
-
 // REDUCER HELPERS
 export const initialEndpointState: ApiEndpointState = Object.freeze({
   success: null,
@@ -129,24 +78,28 @@ export const handleSuccessKeyed = <
 >(
   name: Name,
   state: State,
-  action: FSA<*, *>,
+  action: FSA<*, JSONObject>,
   key: string
-): State => ({
-  ...state,
-  [name]: {
-    ...initialKeyedCollectionState,
-    ...state[name],
-    success: action.payload || null,
-    isFetching: false,
-    lastUpdate: Date.now(),
-    lastResult: "success",
-    collection: handleKeyedCollection(
-      key,
-      state[name].collection,
-      action.payload
-    )
+): State => {
+  const payload = action.payload;
+
+  if (!payload || typeof payload !== "object") {
+    throw new Error("Expected action's payload to be a valid JSON object");
   }
-});
+
+  return {
+    ...state,
+    [name]: {
+      ...initialKeyedCollectionState,
+      ...state[name],
+      success: payload || null,
+      isFetching: false,
+      lastUpdate: Date.now(),
+      lastResult: "success",
+      collection: handleKeyedCollection(key, state[name].collection, payload)
+    }
+  };
+};
 
 export const handleFailure = <Name: string, State: ReducerState<Name>>(
   name: Name,
