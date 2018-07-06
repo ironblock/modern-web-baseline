@@ -1,0 +1,22 @@
+{
+  "presets": [
+    "node6",
+    "react",
+    ["env", {
+      "modules": false,
+      "targets": {
+        "browsers": [
+          "last 2 versions",
+          "> 5% in US"
+        ],
+        "node": "6.10"
+      }
+    }]
+  ],
+  "plugins": [
+    "transform-flow-strip-types",
+    "transform-object-rest-spread",
+    "transform-async-to-generator",
+    "transform-class-properties"
+  ]
+}

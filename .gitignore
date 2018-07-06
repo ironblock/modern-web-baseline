@@ -1,0 +1,57 @@
+### Git is bad ###
+[transfer]
+  fsckobjects = true
+[fetch]
+  fsckobjects = true
+[receive]
+  fsckObjects = true
+
+### OSX ###
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+
+### Windows ###
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+
+### EDITORS ###
+# Sublime Text
+*.sublime-workspace
+
+# vim (but not SVG files)
+*.s[a-w][a-z]
+!*.svg
+*.mo
+*.o
+*.so
+
+# JetBrains
+.idea
+
+# Any and all logs
+*.log
+
+
+### NODE & NPM ###
+node_modules/

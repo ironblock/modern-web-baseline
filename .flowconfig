@@ -1,0 +1,5 @@
+[ignore]
+.*/.git/.*
+
+[options]
+module.ignore_non_literal_requires=true
