@@ -34,7 +34,6 @@ function getPathsFromStats(chunkName, regex, stats) {
 // Create a static representation of the react app and use it to wrap the route
 // content and initial/dehydrated application state.
 function render(store, stats, request, context) {
-  console.log(request)
   const state = store.getState();
 
   const vendorJs = getPathsFromStats('vendor', /\.js$/, stats);
