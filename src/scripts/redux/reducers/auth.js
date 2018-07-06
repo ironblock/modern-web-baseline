@@ -5,7 +5,6 @@
 import { handleActions } from "redux-actions";
 
 // ACTION TYPES
-import type { ApiEndpointState } from "../utility";
 import {
   handleRequest,
   handleSuccess,
