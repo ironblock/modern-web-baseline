@@ -14,7 +14,7 @@ export type StateShape = {
   auth: AuthState
 };
 
-const rootReducer: StateShape = combineReducers({
+const rootReducer = combineReducers({
   auth
 });
 

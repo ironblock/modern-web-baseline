@@ -15,20 +15,15 @@
 
 /* eslint-disable no-use-before-define */
 declare type FSA<
-  ActionType: string,
+  Type: string,
   Payload: mixed | Error = typeof undefined,
   Meta: mixed = typeof undefined
 > = {|
-  type: ActionType,
+  type: Type,
   payload?: Payload,
   error?: boolean,
   meta?: Meta
 |};
-declare type FluxStandardAction<ActionType, Payload, Meta> = FSA<
-  ActionType,
-  Payload,
-  Meta
->;
 
 // JSON TYPES
 declare type PrimitiveType = null | string | boolean | number;

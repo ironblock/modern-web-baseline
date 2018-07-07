@@ -5,11 +5,9 @@
 // application uses a single store. It should be required by a `<Provider>`
 // client-side or server-side.
 
-import type Store from "redux";
-
 import { createStore, applyMiddleware, compose } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import createSagaMiddleware, { END } from "redux-saga";
+import createSagaMiddleware from "redux-saga";
 
 import type { StateShape } from "./reducers";
 
@@ -23,7 +21,7 @@ declare var module: {
   }
 };
 
-export function configureStore(): Promise<Store> {
+export function configureStore(): Promise<*> {
   const sagaMiddleware = createSagaMiddleware();
   let initialState: StateShape;
   let composeEnhancers: compose | composeWithDevTools;
@@ -38,7 +36,7 @@ export function configureStore(): Promise<Store> {
   }
 
   // Create store
-  const store: Store = createStore(
+  const store = createStore(
     rootReducer,
     initialState,
     composeEnhancers(applyMiddleware(sagaMiddleware))
@@ -54,11 +52,9 @@ export function configureStore(): Promise<Store> {
   }
 
   // Begin persisting store
-  return new Promise((resolve: Store => void) => {
+  return new Promise(resolve => {
     // Redux Saga configuration
-    store.runSaga = sagaMiddleware.run;
-    store.close = (): void => store.dispatch(END);
-    store.runSaga(rootSaga);
+    sagaMiddleware.run(rootSaga);
     resolve(store);
   });
 }

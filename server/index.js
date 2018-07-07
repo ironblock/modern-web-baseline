@@ -10,16 +10,16 @@ process.on("unhandledRejection", rejection => console.error(rejection));
 
 const path = require("path");
 
-const Express = require("express");
+const express = require("express");
 const webpack = require("webpack");
 const devMiddleware = require("webpack-dev-middleware");
 const hotMiddleware = require("webpack-hot-middleware");
 const hotServerMiddleware = require("webpack-hot-server-middleware");
 
 const config = require("./config");
-let port;
+let port = 80;
 
-const app = new Express();
+const app = express();
 
 // In the case of NODE_ENV=staging or undefined default to production.
 const nodeEnv =
@@ -29,7 +29,7 @@ console.info(`Starting webserver with NODE_ENV=${nodeEnv}`);
 
 // EXPRESS CONFIGURATION
 // =====================
-app.use("/public", Express.static(path.join(__dirname, "..", "public")));
+app.use("/public", express.static(path.join(__dirname, "..", "public")));
 
 // LIVE DEVELOPMENT MODE
 if (nodeEnv === "development") {
@@ -69,9 +69,9 @@ if (nodeEnv === "development") {
   throw new Error(`A mode of "${nodeEnv}" is not supported`);
 }
 
-app.listen(port, error => {
-  if (error) {
-    return console.error(error);
+app.listen(port, (error: ?Error) => {
+  if (error instanceof Error) {
+    console.error(error);
   }
 
   if (nodeEnv === "development") {

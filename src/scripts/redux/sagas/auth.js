@@ -2,6 +2,7 @@
 // AUTH - SAGA
 // =============================================================================
 
+import type { Saga, Effect } from "redux-saga";
 import { call, put, takeLatest } from "redux-saga/effects";
 
 import type { LoginRequest } from "../actions/auth";
@@ -21,19 +22,24 @@ export function* loginSaga(action: LoginRequest): Generator<Effect, void, *> {
 
     const response = yield call(fetch, "https://reqres.in/api/login", {
       method: "POST",
-      body: { email, password }
+      body: JSON.stringify({ email, password })
     });
-    let payload;
+
+    let responseBody;
+
+    if (response.json) {
+      responseBody = yield call(response.json);
+    } else {
+      responseBody = response;
+    }
 
     switch (response.status) {
       case 200:
-        yield put(loginSuccess(response.json()));
+        yield put(loginSuccess(responseBody));
         break;
 
       default:
-        payload = response.json ? response.json() : response;
-
-        yield put(loginFailure(payload));
+        yield put(loginFailure(responseBody));
         break;
     }
   } catch (error) {
@@ -42,7 +48,7 @@ export function* loginSaga(action: LoginRequest): Generator<Effect, void, *> {
 }
 
 export default {
-  *watchLoginSaga(): Generator<*, *, *> {
+  *watchLoginSaga(): Saga<void> {
     yield takeLatest(LOGIN_REQUEST, loginSaga);
   }
 };
