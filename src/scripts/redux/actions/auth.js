@@ -1,7 +1,6 @@
 // @flow
 // AUTH - ACTIONS
 // =============================================================================
-import { createAction } from "redux-actions";
 
 import * as Types from "./types/auth";
 
@@ -14,18 +13,37 @@ export type LoginTimeout = FSA<typeof Types.LOGIN_TIMEOUT, ?JSONType>;
 export type LoginMistake = FSA<typeof Types.LOGIN_MISTAKE, ?JSONType>;
 export type LoginSuccess = FSA<typeof Types.LOGIN_SUCCESS, LoginSuccessBody>;
 
-export const loginRequest: LoginRequestBody => LoginRequest = createAction(
-  Types.LOGIN_REQUEST
-);
-export const loginFailure: (error: mixed) => LoginFailure = createAction(
-  Types.LOGIN_FAILURE
-);
-export const loginTimeout: (error: mixed) => LoginTimeout = createAction(
-  Types.LOGIN_TIMEOUT
-);
-export const loginMistake: (error: mixed) => LoginMistake = createAction(
-  Types.LOGIN_MISTAKE
-);
-export const loginSuccess: LoginSuccessBody => LoginSuccess = createAction(
-  Types.LOGIN_SUCCESS
-);
+export const loginRequest: LoginRequestBody => LoginRequest = (
+  payload,
+  meta
+) => ({
+  type: Types.LOGIN_REQUEST,
+  payload,
+  meta
+});
+export const loginFailure: JSONType => LoginFailure = (payload, meta) => ({
+  type: Types.LOGIN_FAILURE,
+  error: true,
+  payload,
+  meta
+});
+export const loginTimeout: JSONType => LoginTimeout = (payload, meta) => ({
+  type: Types.LOGIN_TIMEOUT,
+  error: true,
+  payload,
+  meta
+});
+export const loginMistake: JSONType => LoginMistake = (payload, meta) => ({
+  type: Types.LOGIN_MISTAKE,
+  error: true,
+  payload,
+  meta
+});
+export const loginSuccess: LoginSuccessBody => LoginSuccess = (
+  payload,
+  meta
+) => ({
+  type: Types.LOGIN_SUCCESS,
+  payload,
+  meta
+});
