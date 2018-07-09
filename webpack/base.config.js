@@ -11,6 +11,7 @@ const MinifyPlugin = require("babel-minify-webpack-plugin");
 
 const paths = {
   node_modules: path.join(__dirname, "..", "node_modules"),
+  bootstrap: path.join(__dirname, "..", "node_modules/bootstrap"),
   dist: path.join(__dirname, "..", "dist"),
   assets: path.join(__dirname, "..", "dist", "assets"),
   stats: path.join(__dirname, "..", "dist", "stats.generated.json"),

@@ -6,6 +6,7 @@ import type { Dispatch } from "redux";
 import React, { Fragment } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import { Input, Button } from "reactstrap";
 
 import type { StateShape } from "./redux/reducers";
 import * as authActions from "./redux/actions/auth";
@@ -37,7 +38,7 @@ class App extends React.Component<Props, State> {
     return (
       <main>
         <label htmlFor="email">Email</label>
-        <input
+        <Input
           id="email"
           type="text"
           value={this.state.email}
@@ -45,7 +46,7 @@ class App extends React.Component<Props, State> {
           disabled={this.props.loggingIn}
         />
         <label htmlFor="password">Password</label>
-        <input
+        <Input
           id="password"
           type="password"
           value={this.state.password}
@@ -66,13 +67,13 @@ class App extends React.Component<Props, State> {
             <code>{JSON.stringify(this.props.authFailure, null, 2)}</code>
           </Fragment>
         )}
-        <button
+        <Button
           onClick={() =>
             this.props.handleLoginRequest(this.state.email, this.state.password)
           }
         >
           Submit
-        </button>
+        </Button>
       </main>
     );
   }
