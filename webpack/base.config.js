@@ -4,43 +4,42 @@
 // configuration files. Avoid repeating definitions by creating named exports
 // in this file instead.
 
-const path = require('path');
+const path = require("path");
 
-const webpack = require('webpack');
-const MinifyPlugin = require('babel-minify-webpack-plugin');
+const webpack = require("webpack");
+const MinifyPlugin = require("babel-minify-webpack-plugin");
 
 const paths = {
-  node_modules: path.join(__dirname, '..', 'node_modules'),
-  dist: path.join(__dirname, '..', 'dist'),
-  assets: path.join(__dirname, '..', 'dist', 'assets'),
-  stats: path.join(__dirname, '..', 'dist', 'stats.generated.json'),
-  public: path.join(__dirname, '..', 'public'),
-  favicons: path.join(__dirname, '..', 'public', 'favicons'),
-  scriptSrc: path.join(__dirname, '..', 'src', 'scripts'),
-  styleSrc: path.join(__dirname, '..', 'src', 'styles'),
-  fontSrc: path.join(__dirname, '..', 'src', 'fonts'),
-  imageSrc: path.join(__dirname, '..', 'src', 'images'),
+  node_modules: path.join(__dirname, "..", "node_modules"),
+  dist: path.join(__dirname, "..", "dist"),
+  assets: path.join(__dirname, "..", "dist", "assets"),
+  stats: path.join(__dirname, "..", "dist", "stats.generated.json"),
+  public: path.join(__dirname, "..", "public"),
+  favicons: path.join(__dirname, "..", "public", "favicons"),
+  scriptSrc: path.join(__dirname, "..", "src", "scripts"),
+  styleSrc: path.join(__dirname, "..", "src", "styles"),
+  fontSrc: path.join(__dirname, "..", "src", "fonts"),
+  imageSrc: path.join(__dirname, "..", "src", "images")
 };
 
 const entryPoints = {
-  client: path.join(paths.scriptSrc, 'entryPointClient.js'),
-  server: path.join(paths.scriptSrc, 'entryPointServer.js'),
-}
+  client: path.join(paths.scriptSrc, "entryPointClient.js"),
+  server: path.join(paths.scriptSrc, "entryPointServer.js")
+};
 
 const regex = {
   script: /\.(js|jsx)$/,
   json: /\.(json|schema)$/,
   file: /\.(woff|woff2|svg|png|jpg|jpeg|ico)/,
-  style: /\.(css|scss)$/,
+  style: /\.(css|scss)$/
 };
 
 const plugins = {
-  development: [
-  ],
+  development: [],
   production: [
     new webpack.optimize.AggressiveMergingPlugin(),
-    new MinifyPlugin(),
-  ],
+    new MinifyPlugin()
+  ]
 };
 
 const rules = {
@@ -48,44 +47,40 @@ const rules = {
   script: {
     test: regex.script,
     use: {
-      loader: 'babel-loader',
-      options: { babelrc: true },
+      loader: "babel-loader",
+      options: { babelrc: true }
     },
-    include: [paths.scriptSrc],
+    include: [paths.scriptSrc]
   },
 
   // STYLESHEETS
   style: {
     test: regex.style,
-    use: ['style-loader', 'css-loader', 'sass-loader'],
-    include: [paths.styleSrc, paths.scriptSrc],
+    use: ["style-loader", "css-loader", "sass-loader"],
+    include: [paths.bootstrap, paths.styleSrc, paths.scriptSrc]
   },
 
   // JSON
   json: {
     test: regex.json,
     use: {
-      loader: 'json-loader',
-      options: { name: '[name].[ext]' },
-    },
+      loader: "json-loader",
+      options: { name: "[name].[ext]" }
+    }
   },
 
   // FONTS AND IMAGES
   file: {
     test: regex.file,
     use: {
-      loader: 'url-loader',
+      loader: "url-loader",
       options: {
         limit: 5000,
-        name: '[name].[ext]',
-      },
+        name: "[name].[ext]"
+      }
     },
-    include: [
-      paths.imageSrc,
-      paths.fontSrc,
-      paths.node_modules,
-    ],
-  },
+    include: [paths.imageSrc, paths.fontSrc, paths.node_modules]
+  }
 };
 
 module.exports = { paths, regex, plugins, rules, entryPoints };
