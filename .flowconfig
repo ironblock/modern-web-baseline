@@ -2,4 +2,8 @@
 .*/.git/.*
 
 [options]
-module.ignore_non_literal_requires=true
+module.system.node.resolve_dirname=node_modules
+module.system.node.resolve_dirname=./src
+
+[version]
+^0.75

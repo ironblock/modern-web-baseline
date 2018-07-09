@@ -13,8 +13,7 @@ export const initialEndpointState: ApiEndpointState = Object.freeze({
   lastUpdate: null,
   lastResult: null
 });
-export const initialKeyedCollectionState: ApiEndpointState &
-  KeyedCollectionState = Object.freeze({
+export const initialKeyedCollectionState: KeyedCollectionState = Object.freeze({
   ...initialEndpointState,
   collection: {}
 });
@@ -44,10 +43,10 @@ export const handleKeyedCollection = (
   return { ...collection, ...rekeyObject(key, response) };
 };
 
-export const handleRequest = <Name: string, State: ReducerState<Name>>(
+export const handleRequest = <Name: string, State: *>(
   name: Name,
   state: State
-): State => ({
+) => ({
   ...state,
   [name]: {
     ...initialEndpointState,
@@ -56,7 +55,7 @@ export const handleRequest = <Name: string, State: ReducerState<Name>>(
   }
 });
 
-export const handleSuccess = <Name: string, State: ReducerState<Name>>(
+export const handleSuccess = <Name: string, State: *>(
   name: Name,
   state: State,
   action: FSA<*, *>
@@ -101,7 +100,7 @@ export const handleSuccessKeyed = <
   };
 };
 
-export const handleFailure = <Name: string, State: ReducerState<Name>>(
+export const handleFailure = <Name: string, State: *>(
   name: Name,
   state: State,
   action: FSA<*, *>
@@ -117,7 +116,7 @@ export const handleFailure = <Name: string, State: ReducerState<Name>>(
   }
 });
 
-export const handleTimeout = <Name: string, State: ReducerState<Name>>(
+export const handleTimeout = <Name: string, State: *>(
   name: Name,
   state: State,
   action: FSA<*, *>
@@ -133,7 +132,7 @@ export const handleTimeout = <Name: string, State: ReducerState<Name>>(
   }
 });
 
-export const handleMistake = <Name: string, State: ReducerState<Name>>(
+export const handleMistake = <Name: string, State: *>(
   name: Name,
   state: State,
   action: FSA<*, *>

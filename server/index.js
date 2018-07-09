@@ -69,11 +69,7 @@ if (nodeEnv === "development") {
   throw new Error(`A mode of "${nodeEnv}" is not supported`);
 }
 
-app.listen(port, (error: ?Error) => {
-  if (error instanceof Error) {
-    console.error(error);
-  }
-
+app.listen(port, () => {
   if (nodeEnv === "development") {
     console.info("Webpack build running, please wait...");
   }

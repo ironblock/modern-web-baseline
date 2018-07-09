@@ -35,5 +35,9 @@ configureStore()
     );
   })
   .then(() => {
-    document.getElementById("HIDE_FOUC").remove();
+    const hideFOUC = document.getElementById("HIDE_FOUC");
+
+    if (hideFOUC) {
+      hideFOUC.remove();
+    }
   });

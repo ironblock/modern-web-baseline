@@ -43,13 +43,14 @@ export function configureStore(): Promise<*> {
   );
 
   // Configure Webpack HMR to accept changing reducers without a reload
-  if (module && module.hasOwnProperty("hot")) {
-    module.hot.accept("./reducers", () => {
-      const nextReducer = require("./reducers").default; // eslint-disable-line global-require
+  // TODO: _module is not defined?
+  // if (module.hot) {
+  //   module.hot.accept("./reducers", () => {
+  //     const nextReducer = require("./reducers").default;
 
-      store.replaceReducer(nextReducer);
-    });
-  }
+  //     store.replaceReducer(nextReducer);
+  //   });
+  // }
 
   // Begin persisting store
   return new Promise(resolve => {
