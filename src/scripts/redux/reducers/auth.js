@@ -2,6 +2,13 @@
 // AUTH - REDUCER
 // =============================================================================
 
+import type {
+  LoginSuccessBody,
+  LoginSuccess,
+  LoginFailure,
+  LoginTimeout,
+  LoginMistake
+} from "../actions/auth";
 import { handleActions } from "redux-actions";
 
 // ACTION TYPES
@@ -22,19 +29,23 @@ import {
 } from "../actions/types/auth";
 
 export type AuthState = {
-  authToken: ApiEndpointState
+  authToken: {| ...ApiEndpointState, success: ?LoginSuccessBody |}
 };
 
 export const initialState: AuthState = {
-  authToken: { ...initialEndpointState }
+  authToken: initialEndpointState
 };
 
 const handlerMap = {
   [LOGIN_REQUEST]: state => handleRequest("authToken", state),
-  [LOGIN_MISTAKE]: (state, action) => handleSuccess("authToken", state, action),
-  [LOGIN_TIMEOUT]: (state, action) => handleFailure("authToken", state, action),
-  [LOGIN_FAILURE]: (state, action) => handleTimeout("authToken", state, action),
-  [LOGIN_SUCCESS]: (state, action) => handleMistake("authToken", state, action)
+  [LOGIN_SUCCESS]: (state, action: LoginSuccess) =>
+    handleSuccess("authToken", state, action),
+  [LOGIN_FAILURE]: (state, action: LoginFailure) =>
+    handleFailure("authToken", state, action),
+  [LOGIN_TIMEOUT]: (state, action: LoginTimeout) =>
+    handleTimeout("authToken", state, action),
+  [LOGIN_MISTAKE]: (state, action: LoginMistake) =>
+    handleMistake("authToken", state, action)
 };
 
 export default handleActions(handlerMap, initialState);

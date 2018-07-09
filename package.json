@@ -55,6 +55,7 @@
     "redux-actions": "^2.4.0",
     "redux-devtools-extension": "^2.13.5",
     "redux-saga": "^0.16.0",
+    "reselect": "^3.0.1",
     "sass-loader": "^7.0.3",
     "sass-variable-loader": "^0.1.2",
     "style-loader": "^0.21.0",

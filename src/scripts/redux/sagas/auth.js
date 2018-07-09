@@ -7,6 +7,7 @@ import { call, put, takeLatest } from "redux-saga/effects";
 
 import type { LoginRequest } from "../actions/auth";
 import { LOGIN_REQUEST } from "../actions/types/auth";
+import { login } from "../../api/auth";
 import { loginSuccess, loginFailure, loginMistake } from "../actions/auth";
 
 export function* loginSaga(action: LoginRequest): Generator<Effect, void, *> {
@@ -20,30 +21,19 @@ export function* loginSaga(action: LoginRequest): Generator<Effect, void, *> {
       throw new Error("password is required");
     }
 
-    const response = yield call(fetch, "https://reqres.in/api/login", {
-      method: "POST",
-      body: JSON.stringify({ email, password })
-    });
+    const { status, body } = yield call(login, email, password);
 
-    let responseBody;
-
-    if (response.json) {
-      responseBody = yield call(response.json);
+    if (status === "SUCCESS") {
+      yield put(loginSuccess(body));
     } else {
-      responseBody = response;
-    }
-
-    switch (response.status) {
-      case 200:
-        yield put(loginSuccess(responseBody));
-        break;
-
-      default:
-        yield put(loginFailure(responseBody));
-        break;
+      yield put(loginFailure(body));
     }
   } catch (error) {
-    yield put(loginMistake(error));
+    if (error instanceof Error) {
+      yield put(loginMistake(error.message));
+    } else if (error) {
+      yield put(loginMistake(JSON.stringify(error)));
+    }
   }
 }
 
