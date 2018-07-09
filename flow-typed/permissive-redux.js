@@ -36,18 +36,19 @@ declare type JSONArray =
   | Array<JSONArray>;
 declare type JSONType = JSONObject | JSONArray | PrimitiveType;
 
-declare type ApiEndpointState = {
-  success: JSONType | null,
-  failure: JSONType | null,
-  timeout: JSONType | null,
-  mistake: JSONType | null,
+declare type ApiEndpointState = {|
+  success: *,
+  failure: *,
+  timeout: *,
+  mistake: *,
   isFetching: boolean,
   lastUpdate: number | null,
   lastResult: "success" | "failure" | "timeout" | "mistake" | null
-};
-declare type KeyedCollectionState = ApiEndpointState & {
+|};
+declare type KeyedCollectionState = {|
+  ...ApiEndpointState,
   collection: { [string]: JSONObject }
-};
+|};
 
 declare type ReducerState<Name: string> = { [string]: ApiEndpointState } & {
   [Name]: ApiEndpointState
